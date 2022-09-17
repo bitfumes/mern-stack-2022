@@ -18,6 +18,11 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+app.get("/transaction", async (req, res) => {
+  const transaction = await Transaction.find({}).sort({ createdAt: -1 });
+  res.json({ data: transaction });
+});
+
 app.post("/transaction", async (req, res) => {
   const { amount, description, date } = req.body;
   const transaction = new Transaction({
