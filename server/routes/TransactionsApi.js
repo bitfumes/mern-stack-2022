@@ -24,4 +24,9 @@ router.delete("/:id", async (req, res) => {
   res.json({ message: "success" });
 });
 
+router.patch("/:id", async (req, res) => {
+  await Transaction.updateOne({ _id: req.params.id }, { $set: req.body });
+  res.json({ message: "success" });
+});
+
 export default router;

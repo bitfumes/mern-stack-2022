@@ -19,7 +19,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
   const [form, setForm] = useState(InitialForm);
 
   useEffect(() => {
-    if (editTransaction !== {}) {
+    if (editTransaction.amount !== undefined) {
       setForm(editTransaction);
     }
   }, [editTransaction]);
@@ -34,8 +34,10 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = editTransaction === {} ? create() : update();
+    editTransaction.amount === undefined ? create() : update();
+  }
 
+  function reload(res) {
     if (res.ok) {
       setForm(InitialForm);
       fetchTransctions();
@@ -50,7 +52,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
         "content-type": "application/json",
       },
     });
-    return res;
+    reload(res);
   }
 
   async function update() {
@@ -64,7 +66,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
         },
       }
     );
-    return res;
+    reload(res);
   }
 
   return (
@@ -103,12 +105,13 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
               )}
             />
           </LocalizationProvider>
-          {editTransaction !== {} && (
+          {editTransaction.amount !== undefined && (
             <Button type="submit" variant="secondary">
               Update
             </Button>
           )}
-          {editTransaction === {} && (
+
+          {editTransaction.amount === undefined && (
             <Button type="submit" variant="contained">
               Submit
             </Button>
