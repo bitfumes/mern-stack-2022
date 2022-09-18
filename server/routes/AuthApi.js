@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { Router } from "express";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 const router = Router();
 
@@ -25,6 +26,30 @@ router.post("/register", async (req, res) => {
   });
   await user.save();
   res.status(201).json({ message: "user is created" });
+});
+
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(406).json({ message: "credentials not found" });
+    return;
+  }
+
+  const matched = await bcrypt.compare(password, user.password);
+  if (!matched) {
+    res.status(406).json({ message: "credentials not found" });
+    return;
+  }
+
+  // create jwt token
+  const payload = {
+    username: email,
+    _id: user._id,
+  };
+  const token = jwt.sign(payload, "some secret.");
+  res.json({ message: "succesfully logged in.", token });
 });
 
 export default router;
