@@ -19,6 +19,9 @@ export default function ButtonAppBar() {
           <Link to="/login" className="text-white">
             <Button color="inherit">Login</Button>
           </Link>
+          <Link to="/register" className="text-white">
+            <Button color="inherit">Register</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>

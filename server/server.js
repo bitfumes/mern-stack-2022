@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import connect from "./database/mongdb.js";
 
+import AuthApi from "./routes/AuthApi.js";
 import TransactionsApi from "./routes/TransactionsApi.js";
 
 const PORT = 4000;
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/transaction", TransactionsApi);
+app.use("/auth", AuthApi);
 
 await connect();
 
