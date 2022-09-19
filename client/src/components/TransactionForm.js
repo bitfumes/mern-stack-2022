@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
 const InitialForm = {
@@ -16,6 +16,7 @@ const InitialForm = {
 };
 
 export default function TransactionForm({ fetchTransctions, editTransaction }) {
+  const token = Cookies.get("token");
   const [form, setForm] = useState(InitialForm);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
       body: JSON.stringify(form),
       headers: {
         "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     reload(res);
@@ -63,6 +65,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
         body: JSON.stringify(form),
         headers: {
           "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -78,6 +81,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
             sx={{ marginRight: 5 }}
             id="outlined-basic"
             label="Amount"
+            type="number"
             size="small"
             name="amount"
             variant="outlined"

@@ -10,6 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
+import Cookies from "js-cookie";
 import * as React from "react";
 
 export default function TransactionsList({
@@ -18,11 +19,15 @@ export default function TransactionsList({
   setEditTransaction,
 }) {
   async function remove(_id) {
+    const token = Cookies.get("token");
     if (!window.confirm("Are you sure")) return;
     const res = await fetch(
       `${process.env.REACT_APP_API_URL}/transaction/${_id}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     if (res.ok) {
