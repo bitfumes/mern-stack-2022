@@ -10,9 +10,12 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Cookie from "js-cookie";
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { getUser } from "../store/auth.js";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,10 +33,11 @@ export default function Login() {
       },
     });
 
-    const { token } = await res.json();
+    const { token, user } = await res.json();
 
     if (res.ok) {
       Cookie.set("token", token);
+      dispatch(getUser(user));
       navigate("/");
     }
   };
