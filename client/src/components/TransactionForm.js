@@ -1,3 +1,5 @@
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -8,14 +10,17 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const InitialForm = {
   amount: 0,
   description: "",
   date: new Date(),
+  category_id: "",
 };
 
 export default function TransactionForm({ fetchTransctions, editTransaction }) {
+  const { categories } = useSelector((state) => state.auth.user);
   const token = Cookies.get("token");
   const [form, setForm] = useState(InitialForm);
 
@@ -72,11 +77,17 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
     reload(res);
   }
 
+  function getCategoryNameById() {
+    return (
+      categories.find((category) => category._id === form.category_id) ?? ""
+    );
+  }
+
   return (
     <Card sx={{ minWidth: 275, marginTop: 10 }}>
       <CardContent>
         <Typography variant="h6">Add New Transaction</Typography>
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex" }}>
           <TextField
             sx={{ marginRight: 5 }}
             id="outlined-basic"
@@ -109,6 +120,20 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
               )}
             />
           </LocalizationProvider>
+
+          <Autocomplete
+            value={getCategoryNameById()}
+            onChange={(event, newValue) => {
+              setForm({ ...form, category_id: newValue._id });
+            }}
+            id="controllable-states-demo"
+            options={categories}
+            sx={{ width: 200, marginRight: 5 }}
+            renderInput={(params) => (
+              <TextField {...params} size="small" label="Category" />
+            )}
+          />
+
           {editTransaction.amount !== undefined && (
             <Button type="submit" variant="secondary">
               Update
@@ -120,7 +145,7 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
               Submit
             </Button>
           )}
-        </form>
+        </Box>
       </CardContent>
     </Card>
   );

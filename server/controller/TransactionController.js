@@ -9,12 +9,13 @@ export const index = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  const { amount, description, date } = req.body;
+  const { amount, description, date, category_id } = req.body;
   const transaction = new Transaction({
     amount,
     description,
     date,
     user_id: req.user._id,
+    category_id,
   });
   await transaction.save();
   res.json({ message: "Success" });
