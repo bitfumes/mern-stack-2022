@@ -14,7 +14,7 @@ import Cookies from "js-cookie";
 import * as React from "react";
 import { useSelector } from "react-redux";
 export default function TransactionsList({
-  transactions,
+  data,
   fetchTransctions,
   setEditTransaction,
 }) {
@@ -63,38 +63,40 @@ export default function TransactionsList({
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions.map((row) => (
-              <TableRow
-                key={row._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center" component="th" scope="row">
-                  {row.amount}
-                </TableCell>
-                <TableCell align="center">{row.description}</TableCell>
-                <TableCell align="center">
-                  {categoryName(row.category_id)}
-                </TableCell>
-                <TableCell align="center">{formatDate(row.date)}</TableCell>
-                <TableCell align="center">
-                  <IconButton
-                    color="primary"
-                    component="label"
-                    onClick={() => setEditTransaction(row)}
-                  >
-                    <EditSharpIcon />
-                  </IconButton>
+            {data.map((month) =>
+              month.transactions.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell align="center" component="th" scope="row">
+                    {row.amount}
+                  </TableCell>
+                  <TableCell align="center">{row.description}</TableCell>
+                  <TableCell align="center">
+                    {categoryName(row.category_id)}
+                  </TableCell>
+                  <TableCell align="center">{formatDate(row.date)}</TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      color="primary"
+                      component="label"
+                      onClick={() => setEditTransaction(row)}
+                    >
+                      <EditSharpIcon />
+                    </IconButton>
 
-                  <IconButton
-                    color="warning"
-                    component="label"
-                    onClick={() => remove(row._id)}
-                  >
-                    <DeleteSharpIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+                    <IconButton
+                      color="warning"
+                      component="label"
+                      onClick={() => remove(row._id)}
+                    >
+                      <DeleteSharpIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
