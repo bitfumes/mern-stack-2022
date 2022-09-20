@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.5cb9b4e0.css","mappings":"AAAA,KACI,wBACJ,CAEA,YACI,UAAY,CACZ,oBACJ","sources":["index.css"],"sourcesContent":["body{\n    background-color: #f5f5f5;\n}\n\n.text-white {\n    color: white;\n    text-decoration: none;\n}"],"names":[],"sourceRoot":""}
