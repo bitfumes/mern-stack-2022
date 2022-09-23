@@ -13,6 +13,7 @@ export const index = async (req, res) => {
             amount: "$amount",
             description: "$description",
             date: "$date",
+            type: "$type",
             _id: "$_id",
           },
         },
