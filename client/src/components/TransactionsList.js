@@ -13,15 +13,23 @@ import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import * as React from "react";
 import { useSelector } from "react-redux";
+
 export default function TransactionsList({
   data,
   fetchTransctions,
   setEditTransaction,
 }) {
   const user = useSelector((state) => state.auth.user);
+
   function categoryName(id) {
+    if (!user || !user.categories) return "NA";
+
     const category = user.categories.find((category) => category._id === id);
     return category ? category.label : "NA";
+  }
+
+  function formatDate(date) {
+    return dayjs(date).format("DD MMM, YYYY");
   }
 
   async function remove(_id) {
@@ -40,10 +48,6 @@ export default function TransactionsList({
       fetchTransctions();
       window.alert("Deleted Successfully");
     }
-  }
-
-  function formatDate(date) {
-    return dayjs(date).format("DD MMM, YYYY");
   }
 
   return (
