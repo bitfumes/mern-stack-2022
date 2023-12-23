@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  web:
+    container_name: mern
+    build: .
+    image: mern
+    ports:
+      - 3000:4000
