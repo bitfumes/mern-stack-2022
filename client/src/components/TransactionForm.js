@@ -21,7 +21,8 @@ const InitialForm = {
 };
 
 export default function TransactionForm({ fetchTransctions, editTransaction }) {
-  const { categories } = useSelector((state) => state.auth.user);
+  const authState = useSelector((state) => state.auth);
+  const { categories } = authState.user || {}; // Use empty object as a fallback
   const token = Cookies.get("token");
   const [form, setForm] = useState(InitialForm);
   const types = ["expense", "income", "transfer"];
@@ -135,18 +136,20 @@ export default function TransactionForm({ fetchTransctions, editTransaction }) {
             />
           </LocalizationProvider>
 
-          <Autocomplete
-            value={getCategoryNameById()}
-            onChange={(event, newValue) => {
-              setForm({ ...form, category_id: newValue._id });
-            }}
-            id="controllable-states-demo"
-            options={categories}
-            sx={{ width: 200, marginRight: 5 }}
-            renderInput={(params) => (
-              <TextField {...params} size="small" label="Category" />
-            )}
-          />
+          {categories && categories.length > 0 && (
+            <Autocomplete
+              value={getCategoryNameById()}
+              onChange={(event, newValue) => {
+                setForm({ ...form, category_id: newValue._id });
+              }}
+              id="controllable-states-demo"
+              options={categories}
+              sx={{ width: 200, marginRight: 5 }}
+              renderInput={(params) => (
+                <TextField {...params} size="small" label="Category" />
+              )}
+            />
+          )}
 
           {editTransaction.amount !== undefined && (
             <Button type="submit" variant="secondary">
